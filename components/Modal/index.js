@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Modal, TouchableHighlight } from 'react-native'
+import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native'
 
-export default class Status extends Component {
+export default class ModalWindow extends Component {
   render() {
     return (
       <Modal
@@ -27,12 +27,12 @@ export default class Status extends Component {
             <Text style={styles.header}>Status</Text>
             <Text>Everything is fine.</Text>
             <View style={{flexDirection:'column', height: '80%',justifyContent: 'flex-end'}}>
-              <TouchableHighlight
+              <TouchableOpacity
                 onPress={() => {
                   this.props.visibleFunction(!this.props.visible);
                 }}>
                 <Text style={styles.closeButton}>Close</Text>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
           </View>
 

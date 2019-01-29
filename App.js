@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Chart from './components/Chart' 
-import Status from './components/Status' 
+import ModalWindow from './components/Modal' 
 import * as shape from 'd3-shape'
 
 export default class App extends React.Component {
@@ -102,7 +102,7 @@ export default class App extends React.Component {
               <Ionicons name="ios-wifi" size={28} color="black" />
               <Ionicons name="ios-options" size={28} color="black" />
             </View>
-            <TouchableHighlight
+            <TouchableOpacity
               onPress={() => {
                 this.setModalVisible(true);
               }}>
@@ -110,7 +110,7 @@ export default class App extends React.Component {
                 <Ionicons name="ios-checkmark-circle" size={28} color="rgba(46, 204, 113,1.0)" />
                 {/* <Ionicons name="ios-close-circle" size={28} color="rgba(231, 76, 60,1.0)" />  */}
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
           </View>
           <View style={[styles.container, styles.r1]}>
             <Chart data={this.state.psiData} color={'#f39c12'} shadowColor={'rgba(241, 196, 15,0.2)'} curveType={shape.curveLinear} />
@@ -128,7 +128,7 @@ export default class App extends React.Component {
             <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 30 }}>+</Text>
           </View>
         </View>
-        <Status visible={this.state.modalVisible} visibleFunction={this.setModalVisible} />
+        <ModalWindow visible={this.state.modalVisible} visibleFunction={this.setModalVisible} />
       </View>
     );
   }

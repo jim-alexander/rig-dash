@@ -12,7 +12,7 @@ export default class Chart extends React.PureComponent {
     const xAxisHeight = 30
 
     return (
-      <View style={{ height: '100%', padding: 10, flexDirection: 'row' }}>
+      <View style={{ height: '100%', paddingHorizontal: 5, flexDirection: 'row' }}>
         <View style={{ flex: 1, marginLeft: 10 }}>
           <LineChart
             style={{ flex: 1 }}

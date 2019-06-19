@@ -1,7 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import Chart from './components/Chart'
-import * as shape from 'd3-shape'
+import { StyleSheet, View } from 'react-native'
 
 import ControlBar from './components/ControlBar'
 import GridChart from './components/GridChart'
@@ -38,38 +36,78 @@ export default class App extends React.Component {
     }
     this.ws.onmessage = msg => this.gotData(msg.data)
   }
-
   gotData = data => {
     let inputs = data.split(' ')
-    let pin_0 = (parseFloat(inputs[0]) - 105) * 0.21
-    let pin_1 = parseFloat(inputs[1])
-    if (pin_0 >= 0 && pin_1 >= 0) {
-      // console.log(pin_0)
+    let p0 = (parseFloat(inputs[0]) - 105) * 0.21
+    let p1 = parseFloat(inputs[1])
+    if (p0 >= 0 && p1 >= 0) {
       this.setState({
-        psi: pin_0.toFixed(0),
-        psiData: [...this.state.psiData, pin_0]
-        // litres: pin_1,
-        // litreData: [...this.state.litreData, pin_1]
+        psi: p0.toFixed(0),
+        psiData: [...this.state.psiData, p0]
       })
     }
-    if (this.state.psiData.length >= this.state.chartLength) {
-      this.state.psiData.shift()
-    }
-    if (this.state.litreData.length >= this.state.chartLength) {
-      this.state.litreData.shift()
-    }
+    this.state.psiData.length >= this.state.chartLength ? this.state.psiData.shift() : null
+    this.state.litreData.length >= this.state.chartLength ? this.state.litreData.shift() : null
   }
+
   changeMain = val => (this.state.main === val ? this.setState({ main: null }) : this.setState({ main: val }))
 
+  chartLength = type => {
+    if (type === 'plus') {
+      if (this.state.chartLength < 500) {
+        this.setState({ chartLength: this.state.chartLength + 50 }, () => {
+          for (let i = 0; i < 50; i++) {
+            this.state.psiData.unshift()
+          }
+        })
+      }
+    } else if (type === 'minus') {
+      if (this.state.chartLength > 50) {
+        this.setState({ chartLength: this.state.chartLength - 50 }, () => {
+          for (let i = 0; i < 50; i++) {
+            this.state.psiData.shift()
+          }
+        })
+      }
+    }
+  }
   render() {
     const { rpm, rpmData, litres, litreData, tonne, weightData, psi, psiData, wifiStatus, main } = this.state
     return (
       <View style={styles.body}>
-        <GridChart value={rpm} title="RPM" data={rpmData} color="rgba(192, 57, 43,1.0)" main={main} changeMain={this.changeMain} />
-        <GridChart value={litres} title="L/s" data={litreData} color="rgba(41, 128, 185,1.0)" main={main} changeMain={this.changeMain} />
-        <GridChart value={tonne} title="Tonne" data={weightData} color="rgba(39, 174, 96,1.0)" main={main} changeMain={this.changeMain} />
-        <GridChart value={psi} title="PSI" data={psiData} color="rgba(52, 73, 94, 1.0)" main={main} changeMain={this.changeMain} />
-        <ControlBar wifiStatus={wifiStatus} />
+        <GridChart
+          value={rpm}
+          title="RPM"
+          data={rpmData}
+          color="rgba(192, 57, 43,1.0)"
+          main={main}
+          changeMain={this.changeMain}
+        />
+        <GridChart
+          value={litres}
+          title="L/s"
+          data={litreData}
+          color="rgba(41, 128, 185,1.0)"
+          main={main}
+          changeMain={this.changeMain}
+        />
+        <GridChart
+          value={tonne}
+          title="Tonne"
+          data={weightData}
+          color="rgba(39, 174, 96,1.0)"
+          main={main}
+          changeMain={this.changeMain}
+        />
+        <GridChart
+          value={psi}
+          title="PSI"
+          data={psiData}
+          color="rgba(52, 73, 94, 1.0)"
+          main={main}
+          changeMain={this.changeMain}
+        />
+        <ControlBar wifiStatus={wifiStatus} chartLength={this.chartLength} chartLengthNum={this.state.chartLength} />
       </View>
     )
   }
@@ -81,8 +119,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     backgroundColor: '#ecf0f1',
-    paddingTop: 20,
-    paddingBottom: 10,
-    paddingHorizontal: 5
+    paddingTop: 18,
+    padding: 5
   }
 })

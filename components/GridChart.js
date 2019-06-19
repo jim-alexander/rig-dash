@@ -1,31 +1,37 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import Chart from './Chart'
 import * as shape from 'd3-shape'
 
-export default class GridChart extends Component {
-  
-  render() {
-    return (
-      <TouchableOpacity
-        style={[styles.row, { flex: this.props.main === this.props.title ? 3 : 1 }]}
-        onPress={() => this.props.changeMain(this.props.title)}>
-        <View style={[styles.container, styles.r1]}>
-          <Chart
-            data={this.props.data}
-            color={this.props.color}
-            shadowColor={this.props.color.replace('1.0', '0.2')}
-            curveType={shape.curveNatural}
-          />
-        </View>
-        <View style={[styles.container, styles.r2, { borderLeftColor: this.props.color, borderLeftWidth: 3 }]}>
-          <Text style={{ fontSize: 50, fontWeight: 'bold' }}>{this.props.value}</Text>
-          <Text style={{ color: 'grey' }}>{this.props.title}</Text>
-        </View>
-      </TouchableOpacity>
-    )
+let mainChecker = (main, title, type) => {
+  if (main === null) {
+    return type === 'font' ? 50 : 1
+  }
+  if (main === title) {
+    return type === 'font' ? 55 : 4
+  } else {
+    return type === 'font' ? 25 : 1
   }
 }
+
+const GridChart = props => (
+  <TouchableOpacity
+    style={[styles.row, { flex: mainChecker(props.main, props.title, 'flex') }]}
+    onPress={() => props.changeMain(props.title)}>
+    <View style={[styles.container, styles.r1]}>
+      <Chart
+        data={props.data}
+        color={props.color}
+        shadowColor={props.color.replace('1.0', '0.2')}
+        curveType={shape.curveNatural}
+      />
+    </View>
+    <View style={[styles.container, styles.r2, { borderLeftColor: props.color, borderLeftWidth: 3 }]}>
+      <Text style={{ fontSize: mainChecker(props.main, props.title, 'font'), fontWeight: 'bold' }}>{props.value}</Text>
+      <Text style={{ color: 'grey' }}>{props.title}</Text>
+    </View>
+  </TouchableOpacity>
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -50,3 +56,5 @@ const styles = StyleSheet.create({
     width: 160
   }
 })
+
+export default GridChart

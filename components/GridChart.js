@@ -2,36 +2,24 @@ import React from 'react'
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import Chart from './Chart'
 import * as shape from 'd3-shape'
+import { withData } from './context'
 
-let mainChecker = (main, title, type) => {
-  if (main === null) {
-    return type === 'font' ? 50 : 1
-  }
-  if (main === title) {
-    return type === 'font' ? 55 : 4
-  } else {
-    return type === 'font' ? 25 : 1
-  }
-}
-
-const GridChart = props => (
-  <TouchableOpacity
-    style={[styles.row, { flex: mainChecker(props.main, props.title, 'flex') }]}
-    onPress={() => props.changeMain(props.title)}>
+export default withData(({ type, data }) => (
+  <TouchableOpacity style={[styles.row]}>
     <View style={[styles.container, styles.r1]}>
       <Chart
-        data={props.data}
-        color={props.color}
-        shadowColor={props.color.replace('1.0', '0.2')}
+        data={data[type.id].data}
+        color={type.color}
+        shadowColor={type.color.replace('1.0', '0.2')}
         curveType={shape.curveNatural}
       />
     </View>
-    <View style={[styles.container, styles.r2, { borderLeftColor: props.color, borderLeftWidth: 3 }]}>
-      <Text style={{ fontSize: mainChecker(props.main, props.title, 'font'), fontWeight: 'bold' }}>{props.value}</Text>
-      <Text style={{ color: 'grey' }}>{props.title}</Text>
+    <View style={[styles.container, styles.r2, { borderLeftColor: type.color, borderLeftWidth: 3 }]}>
+      <Text style={styles.value}>{data[type.id].value}</Text>
+      <Text style={styles.title}>{type.title}</Text>
     </View>
   </TouchableOpacity>
-)
+))
 
 const styles = StyleSheet.create({
   container: {
@@ -54,7 +42,12 @@ const styles = StyleSheet.create({
   },
   r2: {
     width: 160
+  },
+  value: {
+    fontWeight: 'bold',
+    fontSize: 35
+  },
+  title: {
+    color: 'grey'
   }
 })
-
-export default GridChart

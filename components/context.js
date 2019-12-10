@@ -14,16 +14,27 @@ export const AppProvider = ({ children }) => {
 
   const [duration, setDuration] = useState({ min: 50, max: 500, increment: 50, value: 50 })
 
-  const ws = new WebSocket('ws://192.168.4.1:1880/data')
-
   useEffect(() => {
-    ws.onopen = () => {
-      setConnection(true)
-      ws.onmessage = msg => setRpm({ ...rpm, value: msg.data })
-      ws.onerror = err => console.warn(err)
-      ws.onclose = () => setConnection(false)
+    const ws = new WebSocket('ws://192.168.4.1:1880/data')
+    ws.onopen = () => setConnection(true)
+    ws.onmessage = msg => {
+      let data = msg.data.split(':')
+      if (data) {
+        data[0] === 'rpm' && setRpm({ ...rpm, value: data[1] })
+        data[0] === 'litres' && setLitres({ ...litres, value: data[1] })
+        data[0] === 'tonne' && setTonne({ ...tonne, value: data[1] })
+        data[0] === 'psi' && setPsi({ ...psi, value: data[1] })
+      }
     }
-  }, [ws])
+    ws.onerror = err => console.warn(err)
+    ws.onclose = () => {
+      setConnection(false)
+      ws.close()
+    }
+    return () => {
+      ws.close()
+    }
+  }, [])
 
   const changeDuration = dir => {
     if (duration.value >= duration.min)

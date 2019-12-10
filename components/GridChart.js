@@ -17,9 +17,9 @@ export default withData(({ type, data }) => (
       />
     </View>
     <View style={[styles.container, styles.r2, { borderLeftColor: type.color, borderLeftWidth: 3 }]}>
-      {/* <Text style={styles.value}>{data[type.id].value}</Text> */}
       <Text style={styles.value}>{mapRange(data[type.id].value, 11940, 59581, 4, 20).toFixed(1)}</Text>
       <Text style={styles.title}>{type.title}</Text>
+      <Text style={styles.index}>{data[type.id].value}</Text>
     </View>
   </TouchableOpacity>
 ))
@@ -49,6 +49,10 @@ const styles = StyleSheet.create({
   value: {
     fontWeight: 'bold',
     fontSize: 35
+  },
+  index: {
+    fontWeight: '600',
+    fontSize: 13
   },
   title: {
     color: 'grey'

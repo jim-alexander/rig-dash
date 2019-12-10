@@ -19,7 +19,6 @@ export default () => (
       {charts.map(type => (
         <GridChart type={type} key={type.id} />
       ))}
-
       <ControlBar />
     </View>
   </AppProvider>

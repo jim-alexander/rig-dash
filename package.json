@@ -7,17 +7,17 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@expo/vector-icons": "^10.0.3",
+    "@expo/vector-icons": "^10.0.0",
     "expo": "^35.0.0",
-    "expo-asset": "^7.0.0",
-    "expo-font": "^7.0.0",
+    "expo-asset": "~7.0.0",
+    "expo-font": "~7.0.0",
     "react": "16.8.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
-    "react-native-svg": "^9.13.3",
+    "react-native-svg": "9.9.5",
     "react-native-svg-charts": "^5.2.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-preset-expo": "^7.0.0"
   },
   "private": true
 }

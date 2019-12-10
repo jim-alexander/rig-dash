@@ -17,10 +17,12 @@ export const AppProvider = ({ children }) => {
   const ws = new WebSocket('ws://192.168.4.1:1880/data')
 
   useEffect(() => {
-    ws.onopen = () => setConnection(true)
-    ws.onmessage = msg => console.log(msg)
-    ws.onerror = () => setConnection(false)
-    ws.onclose = () => setConnection(false)
+    ws.onopen = () => {
+      setConnection(true)
+      ws.onmessage = msg => setRpm({ ...rpm, value: msg.data })
+      ws.onerror = err => console.warn(err)
+      ws.onclose = () => setConnection(false)
+    }
   }, [ws])
 
   const changeDuration = dir => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { LineChart, Grid, Path, XAxis, YAxis } from 'react-native-svg-charts'
-import { View } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 
 export default ({ data, shadowColor, color, curveType }) => {
   const Shadow = ({ line }) => <Path key={'shadow'} y={2} d={line} fill={'none'} strokeWidth={4} stroke={shadowColor} />
@@ -10,6 +10,10 @@ export default ({ data, shadowColor, color, curveType }) => {
 
   return (
     <View style={{ height: '100%', paddingHorizontal: 5, flexDirection: 'row' }}>
+      {/* TODO : Click to show number at that time */}
+      {/* <View style={styles.selected}>
+        <Text>X</Text>
+      </View> */}
       <View style={{ flex: 1, marginLeft: 10 }}>
         <LineChart
           style={{ flex: 1 }}
@@ -23,12 +27,12 @@ export default ({ data, shadowColor, color, curveType }) => {
           <Shadow />
         </LineChart>
         {/* <XAxis
-            style={{ marginHorizontal: -10, height: xAxisHeight }}
-            data={this.props.data}
-            formatLabel={(value, index) => index}
-            contentInset={{ left: 10, right: 10 }}
-            svg={axesSvg}
-          /> */}
+          style={{ marginHorizontal: -10, height: xAxisHeight }}
+          data={data}
+          formatLabel={(value, index) => index}
+          contentInset={{ left: 10, right: 10 }}
+          svg={axesSvg}
+        /> */}
       </View>
 
       <YAxis
@@ -42,3 +46,15 @@ export default ({ data, shadowColor, color, curveType }) => {
     </View>
   )
 }
+const styles = StyleSheet.create({
+  selected: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: '#f3f3f3',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    zIndex: 50,
+    borderRadius: 4
+  }
+})

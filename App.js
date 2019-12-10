@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native'
 import { AppProvider } from './components/context'
 
 import ControlBar from './components/ControlBar'
-import GridChart from './components/GridChart'
+import Rows from './components/Rows'
 
 const charts = [
   { title: 'RPM', color: 'rgba(192, 57, 43,1.0)', id: 'rpm' },
@@ -17,8 +17,9 @@ export default () => (
   <AppProvider>
     <View style={styles.body}>
       {charts.map(type => (
-        <GridChart type={type} key={type.id} />
+        <Rows type={type} key={type.id} />
       ))}
+
       <ControlBar />
     </View>
   </AppProvider>

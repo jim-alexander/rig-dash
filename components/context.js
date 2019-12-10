@@ -7,10 +7,8 @@ const Consumer = AppContext.Consumer
 export const AppProvider = ({ children }) => {
   const [connection, setConnection] = useState(false)
 
-  const [rpm, setRpm] = useState({ value: 0, data: [] })
-  const [litres, setLitres] = useState({ value: 0, data: [] })
-  const [tonne, setTonne] = useState({ value: 0, data: [] })
-  const [psi, setPsi] = useState({ value: 0, data: [] })
+  const [values, setValues] = useState({ rpm: 0, litres: 0, tonne: 0, psi: 0 })
+  const [data, setData] = useState({ rpm: [], litres: [], tonne: [], psi: [] })
 
   const [duration, setDuration] = useState({ min: 50, max: 500, increment: 50, value: 50 })
 
@@ -18,13 +16,8 @@ export const AppProvider = ({ children }) => {
     const ws = new WebSocket('ws://192.168.4.1:1880/data')
     ws.onopen = () => setConnection(true)
     ws.onmessage = msg => {
-      let data = msg.data.split(':')
-      if (data) {
-        data[0] === 'rpm' && setRpm({ ...rpm, value: data[1] })
-        data[0] === 'litres' && setLitres({ ...litres, value: data[1] })
-        data[0] === 'tonne' && setTonne({ ...tonne, value: data[1] })
-        data[0] === 'psi' && setPsi({ ...psi, value: data[1] })
-      }
+      let _msg = msg.data.split(':')
+      _msg && setValues({ ...values, [_msg[0]]: _msg[1] })
     }
     ws.onerror = err => console.warn(err)
     ws.onclose = () => {
@@ -35,6 +28,20 @@ export const AppProvider = ({ children }) => {
       ws.close()
     }
   }, [])
+
+  // TODO : I want to save all the data but only show data depending on the duration set
+  // ALSO : Set the initial length of the array to the duration to stop the scale shifting
+
+  useEffect(() => {
+    let _new = { ...data }
+    Object.keys(values).map(i => {
+      let temp = [...data[i]]
+      temp.push(parseInt(values[i]))
+      if (temp.length >= 100) temp.shift()
+      _new[i] = temp
+    })
+    setData(_new)
+  }, [values])
 
   const changeDuration = dir => {
     if (duration.value >= duration.min)
@@ -47,9 +54,7 @@ export const AppProvider = ({ children }) => {
         setDuration({ ...duration, value: duration.value - duration.increment })
   }
 
-  const data = { rpm, litres, tonne, psi }
-
-  return <Provider value={{ data, connection, duration, setDuration, changeDuration }}>{children}</Provider>
+  return <Provider value={{ connection, values, data, duration, setDuration, changeDuration }}>{children}</Provider>
 }
 
 export const withData = Component => props => <Consumer>{contexts => <Component {...props} {...contexts} />}</Consumer>

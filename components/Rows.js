@@ -6,20 +6,20 @@ import { withData } from './context'
 
 const mapRange = (val, x_low, x_high, y_low, y_high) => ((val - x_low) * (y_high - y_low)) / (x_high - x_low) + y_low
 
-export default withData(({ type, data }) => (
+export default withData(({ type, values, data }) => (
   <TouchableOpacity style={[styles.row]}>
     <View style={[styles.container, styles.r1]}>
       <Chart
-        data={data[type.id].data}
+        data={data[type.id]}
         color={type.color}
         shadowColor={type.color.replace('1.0', '0.2')}
         curveType={shape.curveNatural}
       />
     </View>
     <View style={[styles.container, styles.r2, { borderLeftColor: type.color, borderLeftWidth: 3 }]}>
-      <Text style={styles.value}>{mapRange(data[type.id].value, 11940, 59581, 4, 20).toFixed(1)}</Text>
+      <Text style={styles.value}>{mapRange(values[type.id], 11940, 59581, 4, 20).toFixed(1)}</Text>
       <Text style={styles.title}>{type.title}</Text>
-      <Text style={styles.index}>{data[type.id].value}</Text>
+      <Text style={styles.index}>{values[type.id]}</Text>
     </View>
   </TouchableOpacity>
 ))

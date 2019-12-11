@@ -4,8 +4,6 @@ import Chart from './Chart'
 import * as shape from 'd3-shape'
 import { withData } from './context'
 
-const mapRange = (val, x_low, x_high, y_low, y_high) => ((val - x_low) * (y_high - y_low)) / (x_high - x_low) + y_low
-
 export default withData(({ type, values, data }) => (
   <TouchableOpacity style={[styles.row]}>
     <View style={[styles.container, styles.r1]}>
@@ -17,7 +15,7 @@ export default withData(({ type, values, data }) => (
       />
     </View>
     <View style={[styles.container, styles.r2, { borderLeftColor: type.color, borderLeftWidth: 3 }]}>
-      <Text style={styles.value}>{mapRange(values[type.id], 11940, 59581, 4, 20).toFixed(1)}</Text>
+      <Text style={styles.value}>{values[type.id]}</Text>
       <Text style={styles.title}>{type.title}</Text>
       <Text style={styles.index}>{values[type.id]}</Text>
     </View>

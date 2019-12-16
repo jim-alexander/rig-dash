@@ -13,8 +13,6 @@ export const AppProvider = ({ children }) => {
 
   const [msg, setMsg] = useState(null)
 
-  const [rpm, setRpm] = useState(0)
-
   const [duration, setDuration] = useState({ min: 50, max: 500, increment: 50, value: 50 })
 
   const mapRange = (val, x_low, x_high, y_low, y_high) => ((val - x_low) * (y_high - y_low)) / (x_high - x_low) + y_low

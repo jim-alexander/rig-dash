@@ -11,23 +11,23 @@ const charts = [
   { title: 'PSI', color: 'rgba(52, 73, 94, 1.0)', id: 'psi' }
 ]
 
-export default withData(({ values, data }) =>
+export default withData(({ data, duration }) =>
   charts.map(type => (
-    <TouchableOpacity style={[styles.row]} key={type.id}>
+    <View style={[styles.row]} key={type.id}>
       <View style={[styles.container, styles.r1]}>
         <Chart
           data={data[type.id]}
           color={type.color}
           shadowColor={type.color.replace('1.0', '0.2')}
           curveType={shape.curveNatural}
+          duration={duration.value}
         />
       </View>
       <View style={[styles.container, styles.r2, { borderLeftColor: type.color, borderLeftWidth: 3 }]}>
-        <Text style={styles.value}>{values[type.id]}</Text>
+        <Text style={styles.value}>{data[type.id][data[type.id].length - 1]}</Text>
         <Text style={styles.title}>{type.title}</Text>
-        <Text style={styles.index}>{values[type.id]}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   ))
 )
 

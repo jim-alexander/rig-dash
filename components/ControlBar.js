@@ -20,7 +20,8 @@ export default withData(({ connection, duration, changeDuration }) => (
       <Entypo name='grid' size={28} color='black' />
     </TouchableOpacity>
     <View style={[styles.container, styles.timeLine]}>
-      <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{duration.value}</Text>
+      <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{duration.value / 60}</Text>
+      <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'grey' }}>Minute{duration.value / 60 !== 1 && 's'}</Text>
     </View>
     <View style={{ flexDirection: 'row', width: 170 }}>
       <TouchableOpacity

@@ -11,6 +11,11 @@ const charts = [
   { title: 'PSI', color: 'rgba(52, 73, 94, 1.0)', id: 'psi' }
 ]
 
+const val = (data, type) => {
+  let value = data[type.id][data[type.id].length - 1]
+  return value === -921233 ? 'err' : value
+}
+
 export default withData(({ data, duration }) =>
   charts.map(type => (
     <View style={[styles.row]} key={type.id}>
@@ -24,7 +29,7 @@ export default withData(({ data, duration }) =>
         />
       </View>
       <View style={[styles.container, styles.r2, { borderLeftColor: type.color, borderLeftWidth: 3 }]}>
-        <Text style={styles.value}>{data[type.id][data[type.id].length - 1]}</Text>
+        <Text style={styles.value}>{val(data, type)}</Text>
         <Text style={styles.title}>{type.title}</Text>
       </View>
     </View>

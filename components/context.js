@@ -41,7 +41,8 @@ export const AppProvider = ({ children }) => {
         { id: 'psi', xMin: 0, xMax: 3626, decimal: false, action: setPsi, data: psi }
       ]
       let index = sensors.findIndex(i => i.id === msg[0])
-      let value = mapRange(msg[1], 11940, 59581, sensors[index].xMin, sensors[index].xMax).toFixed(1)
+      let value =
+        msg[1] === 'err' ? -921233 : mapRange(msg[1], 11940, 59581, sensors[index].xMin, sensors[index].xMax).toFixed(1)
       sensors[index].action([...sensors[index].data, parseInt(value)])
     }
   }, [msg])
